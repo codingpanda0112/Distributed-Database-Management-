@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="DB" default="build" basedir=".">
+	<property name="src" location="src" />
+	<property name="classes" location="classes" />
+	<property name="logs" location="logs" />
+	<property name="lib" location="libs" />
+
+	<target name="mkdirs">
+		<mkdir dir="${classes}" />
+		<mkdir dir="${logs}" />
+	</target>
+
+	<target name="compile" depends="mkdirs" description="compile the source code">
+		<javac srcdir="${src}" destdir="${classes}">
+			<classpath>
+				<pathelement path="${classpath}" />
+				<pathelement location="${lib}/log4j-1.2.15.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="build" depends="compile,clean_light" description="build!">
+		<jar jarfile="${lib}/LPD.jar" basedir="${classes}" />
+	</target>
+
+
+	<target name="run" >
+		<java classname="TestScenario1">
+			<arg line="LookupServer DatabaseServer Client" />
+			<classpath>
+				<pathelement path="${classpath}" />
+				<pathelement location="${lib}/LPD.jar" />
+				<pathelement location="${lib}/log4j-1.2.15.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="clean_light" description="clean up">
+		<delete dir="${logs}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${classes}" />
+		<delete dir="${logs}" />
+		<delete file="${lib}/LPD.jar" />
+	</target>
+</project>
